@@ -3,18 +3,16 @@
 
 ## Introduction
 
-This project is using a JEE backend and an AngularJs frontend.
+This project is using a JEE backend and an AngularJs frontend. It makes use of relayr Java API.
+This API is leveraging RxJava. Details can be found on https://github.com/relayr/java-sdk.
 
-check it out:
-
-```bash
-git clone https://github.com/adesso-iot-workshop-2016/iot-alarm.git
-```
 
 ## Prerequisites
+* [git](https://git-scm.com/)
 * [npm](https://www.npmjs.org)
 * [nodejs](http://nodejs.org)
 * [JDK](http://www.oracle.com/technetwork/java/javaee/downloads/index.html)
+* [Maven](https://maven.apache.org)
 * [bower](http://bower.io)
 * [PhantomJs](http://phantomjs.org)
 * [Application Server](http://http://wildfly.org/) or
@@ -22,7 +20,9 @@ git clone https://github.com/adesso-iot-workshop-2016/iot-alarm.git
 
 
 ## Configuration of the relayr cloud
-Configure your Wunderbar on the relayr cloud. Retrieve the bearer token identifiying you and the device id of the gyroskop of your wunderbar. Update these in src/main/resources/alarm_manager.properties.
+Configure your Wunderbar on the relayr cloud. Retrieve the bearer token identifiying you and the device id of the gyroskop of your wunderbar. The bearer token can be retrieved from the [developer dashboard](https://developer.relayr.io/dashboard/account/general).
+
+Update the token and the device id in [alarm_manager.properties] (https://github.com/adesso-iot-workshop-2016/iot-alarm/blob/master/src/main/resources/alarm_manager.properties).
 
 ## Installation
 ```bash
