@@ -1,17 +1,15 @@
 package de.adesso.alarm.control;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.interceptor.Interceptors;
-import javax.interceptor.InvocationContext;
-
-import com.sun.mail.util.LogOutputStream;
 
 import de.adesso.alarm.entity.Alarm;
 import de.adesso.alarm.entity.AlarmStatus;
@@ -19,7 +17,6 @@ import io.relayr.java.RelayrJavaSdk;
 import io.relayr.java.model.Device;
 import io.relayr.java.model.User;
 import io.relayr.java.model.action.Reading;
-import retrofit.RetrofitError;
 import rx.Observable;
 
 /**
@@ -30,34 +27,60 @@ import rx.Observable;
 @ApplicationScoped
 public class AlarmManager {
 	
-	private static final String BEARER_TOKEN = "Bearer JOVmSFDeTWGa6XzRaPML0l0QDX.QG_no";
-	//private static final String DEVICE_ID = "78e0f7bd-18b7-492e-96cd-43000cfba258";//wunderbar
-	private static final String DEVICE_ID = "73de73af-2bdf-4512-8ae9-e53f9f6d173f";//xdk
+	private static final String MOCK_DEVICE_ID = "d4650445-d85f-4c4a-bbb3-2da7ccd9c28d";
 	private static final Logger LOG = Logger.getLogger(AlarmManager.class.getName());
+	private static final String KEY_DEVICE_ID = "DEVICE_ID";
+	private static final String KEY_BEARER_TOKEN = "BEARER_TOKEN";
+	private static final String KEY_TIMEOUT = "TIMEOUT";
+	private static final String DEFAULT_TIMEOUT = "10000";
 	
 	private Alarm alarm = new Alarm();
 
 	private Device device;
 	private Observable<Reading> readings;
+	
+	private String deviceId;
+	private String bearerToken;
+	private long timeout;
 
 	
 	@PostConstruct
 	public void init() {
+		
+		try {
+			readConfiguration();
+		} catch (IOException e) {
+			LOG.severe("Could not read the configuration. " + e.getMessage());
+			throw new RuntimeException(e.getMessage(), e);
+		}
+		
 		try {
 			//cacheModels(true).
-			new RelayrJavaSdk.Builder().setToken(BEARER_TOKEN).cacheModels(true).build();
+			new RelayrJavaSdk.Builder().setToken(bearerToken).cacheModels(true).build();
 		} catch (Exception e) {
 			LOG.warning("Enabling mock mode as an error occured: " + e.getMessage());
-			new RelayrJavaSdk.Builder().inMockMode(true).setToken(BEARER_TOKEN).cacheModels(true).build();
+			new RelayrJavaSdk.Builder().inMockMode(true).setToken(bearerToken).cacheModels(true).build();
 		}
 		try {
-			device = findDevice(DEVICE_ID);
+			device = findDevice(deviceId);
 		} catch (IllegalArgumentException e) {
 			LOG.severe(e.getMessage());
 		}
 		alarm.setItem(device.getName());
 	}
 		
+	private void readConfiguration() throws IOException {
+		//TODO: Try to read from system environment variables first
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream input = classLoader.getResourceAsStream("alarm_manager.properties");
+		Properties config = new Properties();
+		config.load(input);
+		this.bearerToken = config.getProperty(KEY_BEARER_TOKEN);
+		this.deviceId = config.getProperty(KEY_DEVICE_ID);
+		this.timeout = Long.parseLong(config.getProperty(KEY_TIMEOUT, DEFAULT_TIMEOUT));
+		
+	}
+
 	/**
 	 * Get the current alarm.
 	 * TODO: replace logic to circle through the different status.
@@ -93,9 +116,9 @@ public class AlarmManager {
 		alarm.setAlarmDate(null);
 		alarm.setActivationDate(new Date());
 		alarm.setReason("");
-		readings = device.subscribeToCloudReadings().timeout(30, TimeUnit.SECONDS);
+		readings = device.subscribeToCloudReadings().timeout(timeout, TimeUnit.MILLISECONDS);
 		readings.subscribe(new AngularSpeedObserver(this));
-		//readings.subscribe(new AccelerationObserver(this));
+		readings.subscribe(new AccelerationObserver(this));
 	}
 
 	private void inactivate(final Alarm alarmStatus) {
@@ -115,14 +138,13 @@ public class AlarmManager {
 	
 	private Device findDevice(String deviceId) throws IllegalArgumentException {
 		User user = null;
-		String id = DEVICE_ID;
+		String id = deviceId;
 		try {
 			user = RelayrJavaSdk.getUser().toBlocking().single();
 		} catch (RuntimeException e) {
-			new RelayrJavaSdk.Builder().inMockMode(true).setToken(BEARER_TOKEN).cacheModels(true).build();
+			new RelayrJavaSdk.Builder().inMockMode(true).setToken(bearerToken).cacheModels(true).build();
 			user = RelayrJavaSdk.getUser().toBlocking().single();
-			//xdk: 24399746-42dc-431b-aefe-b41debfe5b1b
-			id = "d4650445-d85f-4c4a-bbb3-2da7ccd9c28d"; //Gyroskop
+			id = MOCK_DEVICE_ID;
 		}
 		List<Device> devices = user.getDevices().toBlocking().first();
 		for (Device device : devices) {

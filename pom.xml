@@ -12,7 +12,7 @@
 	<url>http://adesso.de</url>
 
 	<properties>
-		<artifact.name>app</artifact.name>
+		<artifact.name>alarm</artifact.name>
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
 		<vendor.loc>src/main/webapp/vendor</vendor.loc>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -102,6 +102,9 @@
 				<directory>src/main/javascript</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>
+        		<directory>src/main/resources</directory>
+      		</resource>
 		</resources>
 		<plugins>
 			<plugin>
