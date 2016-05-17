@@ -1,0 +1,52 @@
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Alarm</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="https://www.adesso.de/de/technologien/digitalisierung/digitalisierung_1.html" target="_blank">Contact</a></li>
+            </ul>
+            <p class="navbar-text pull-right">
+                <button class="btn btn-xs btn-link" type="button" data-toggle="button"
+                        data-ng-click="toggleDebug()">Debug
+                </button>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="container theme-showcase" role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h3>Alarm for {{data.item}}</h3>
+
+		<div ng-switch="data.status"> 
+		  <div ng-switch-when="ACTIVE" class="alert alert-success" role="alert">
+		  	Alarm active since {{data.activationDate | date:'medium'}}. 	
+		    <p/>
+	    	<p><a class="btn btn-primary btn-lg" role="button" ng-click="setAlarmStatus('ACTIVE')">Reset alarm</a>
+	    	<a class="btn btn-default btn-lg" role="button" ng-click="setAlarmStatus('INACTIVE')">Deactivate alarm</a></p>  
+		  </div>
+  		  <div ng-switch-when="INACTIVE" class="alert alert-warning" role="alert">Alarm deactivated
+		    <p/>
+	    	<p><a class="btn btn-primary btn-lg" role="button" ng-click="setAlarmStatus('ACTIVE')">Activate alarm</a>
+	    	</p>
+  		  </div>
+  		  <div ng-switch-when="TRIGGERED" class="alert alert-danger" role="alert">
+  		  	<h1>ALARM ALARM ALARM</h1>
+  		  	Alarm triggered at {{data.alarmDate | date:'medium'}}!
+		    <p/>
+	    	<p><a class="btn btn-primary btn-lg" role="button" ng-click="setAlarmStatus('ACTIVE')">Reset alarm</a>
+	    	<a class="btn btn-default btn-lg" role="button" ng-click="setAlarmStatus('INACTIVE')">Deactivate alarm</a></p>
+	      </div>	    
+	    </div>
+
+    </div>
+  
+
+</div> <!-- /container -->
+
+<pre data-ng-model="debug" data-ng-show="debug">{{ data | json }}</pre>

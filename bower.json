@@ -1,0 +1,33 @@
+{
+    "name": "wunderbar_alarm",
+    "version": "0.5.0",
+    "authors": [
+        "in-we <ingo.weichsel@adesso.de>"
+    ],
+    "description": "A simple wunderbar IoT demonstration.",
+    "keywords": [
+        "java",
+        "maven",
+        "angularjs",
+        "wunderbar"
+    ],
+    "license": "Apache 2.0",
+    "homepage": "",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "src/main/webapp/vendor",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "angular-loader": "^1.5.6",
+        "angular-mocks": "^1.5.6",
+        "angular-route": "^1.5.6",
+        "angular": "^1.5.6",
+        "bootstrap": "^3.3.6"
+    },
+    "main": "src/main/webapp/index.html"
+}
