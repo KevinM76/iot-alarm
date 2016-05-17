@@ -20,13 +20,15 @@ git clone https://github.com/adesso-iot-workshop-2016/iot-alarm.git
 * [Application Server](http://http://wildfly.org/) or
 * [Docker](https://www.docker.com/)
 
-## Installation
 
+## Configuration of the relayr cloud
+Configure your Wunderbar on the relayr cloud. Retrieve the bearer token identifiying you and the device id of the gyroskop of your wunderbar. Update these in src/main/resources/alarm_manager.properties.
+
+## Installation
 ```bash
 mvn package
 ```
-# Configuration of the relayr cloud
-Configure your Wunderbar on the relayr cloud. Retrieve the bearer token identifiying you and the device id of the gyroskop of your wunderbar. Update these in src/main/resources/alarm_manager.properties.
+The build creates an alarm.war file in the target directory. You can either copy it to your deployment folder of the application server (i.e. <wildfly-install-dir>/standalone/deployments) or build and run a docker image.
 
 ## Docker instructions
 ```bash
