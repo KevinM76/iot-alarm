@@ -17,8 +17,8 @@ git clone https://github.com/adesso-iot-workshop-2016/iot-alarm.git
 * [JDK](http://www.oracle.com/technetwork/java/javaee/downloads/index.html)
 * [bower](http://bower.io)
 * [PhantomJs](http://phantomjs.org)
-* [Application Server](i.e. Wildfly 10)
-* [Docker]
+* [Application Server](http://http://wildfly.org/) or
+* [Docker](https://www.docker.com/)
 
 ## Installation
 
