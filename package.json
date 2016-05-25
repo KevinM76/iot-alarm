@@ -16,7 +16,7 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-junit-reporter": "^1.0.0",
-    "shelljs": "^0.7.0"
+    "shelljs": "^0.7.0",
     "jasmine-core": "^2.4.1",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0"
@@ -32,5 +32,5 @@
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "update-index-async": "node -e \"require('shelljs/global'); sed('-i', /\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/, '//@@NG_LOADER_START@@\\n' + cat('src/main/webapp/vendor/angular-loader/angular-loader.min.js') + '\\n//@@NG_LOADER_END@@', 'src/main/webapp/index.html');\""
-  },
+  }
 }
