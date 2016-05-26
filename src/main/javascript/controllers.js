@@ -3,15 +3,18 @@ var controllers = angular.module("controllers", []);
 controllers.controller("HomeController", ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
     $scope.debug = false;
     $scope.title = "Hello";
-
-    $http.get("service/alarmstatus")
+    
+    $scope.getStatus = function() {
+        $http.get("service/alarmstatus")
     		.success(function (data) {
     			$scope.data = data;
     		})
     		.error(function (data) {
-				console.log('Could not read from "service/alarmstatus"');
-			});
-
+    			console.log('Could not read from "service/alarmstatus"');
+    		});
+    }
+    $scope.getStatus();
+    
     $scope.toggleDebug = function () {
         $scope.debug = !$scope.debug;
     };
@@ -29,12 +32,10 @@ controllers.controller("HomeController", ['$scope', '$http', '$timeout', functio
     };
 
     // Function to replicate setInterval using $timeout service.
-    $scope.intervalFunction = function(){
+    $scope.intervalFunction = function() {
       $timeout(function() {
-        $http.get("service/alarmstatus").success(function (data) {
-            $scope.data = data;
-        });
-        $scope.intervalFunction();
+    	  $scope.getStatus();
+    	  $scope.intervalFunction();
       }, 1000);
     };
 

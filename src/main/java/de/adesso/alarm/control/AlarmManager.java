@@ -143,6 +143,7 @@ public class AlarmManager {
 			user = RelayrJavaSdk.getUser().toBlocking().single();
 		} catch (RuntimeException e) {
 			new RelayrJavaSdk.Builder().inMockMode(true).setToken(bearerToken).cacheModels(true).build();
+			LOG.warning("Trying mock mode. " + e.getMessage());
 			user = RelayrJavaSdk.getUser().toBlocking().single();
 			id = MOCK_DEVICE_ID;
 		}
