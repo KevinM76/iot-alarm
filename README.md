@@ -9,20 +9,23 @@ This API is leveraging RxJava. Details can be found on https://github.com/relayr
 
 ## Prerequisites
 * [git](https://git-scm.com/)
-* [npm](https://www.npmjs.org)
 * [nodejs](http://nodejs.org)
+* [npm](https://www.npmjs.org)
+* [bower](http://bower.io)
+   * Install by calling npm install -g bower
 * [JDK](http://www.oracle.com/technetwork/java/javaee/downloads/index.html)
 * [Maven](https://maven.apache.org)
-* [bower](http://bower.io)
+  * Add binary to path, test by running mvn -v
 * [PhantomJs](http://phantomjs.org)
 * [Application Server](http://http://wildfly.org/) or
 * [Docker](https://www.docker.com/)
-
 
 ## Configuration of the relayr cloud
 Configure your Wunderbar on the relayr cloud. Retrieve the bearer token identifiying you and the device id of the gyroskop of your wunderbar. The bearer token can be retrieved from the [developer dashboard](https://developer.relayr.io/dashboard/account/general).
 
 Update the token and the device id in [alarm_manager.properties] (https://github.com/adesso-iot-workshop-2016/iot-alarm/blob/master/src/main/resources/alarm_manager.properties).
+
+Update pom.xml with the path to the phantomJS binary.
 
 ## Installation
 ```bash
